@@ -23,4 +23,33 @@ app.use(bodyParser.urlencoded({ limit: "30mb", express: true }));
 app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
-//
+// File Storage
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/assets");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+const upload = multer({ storage });
+
+// Mongoose Setup
+const PORT = process.env.PORT || 5001;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.2bogekk.mongodb.net/?retryWrites=true&w=majority`;
+mongoose
+  //   .connect(process.env.MONGO_URL, {
+  .connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    app.listen(PORT, () =>
+      console.log(`Sociopedia Server is Running on Port: ${PORT}`)
+    );
+  })
+  .catch((error) => console.log(`${error} did not connect.`));
+
+app.get("/", (req, res) => {
+  res.send("Sociopedia Server!");
+});
