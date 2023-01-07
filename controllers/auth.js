@@ -6,6 +6,7 @@ import User from "../models/User.js";
 
 export const register = async (req, res) => {
   try {
+    console.log(req.body);
     const {
       firstName,
       lastName,
@@ -14,7 +15,7 @@ export const register = async (req, res) => {
       picturePath,
       friends,
       location,
-      occopation,
+      occupation,
     } = req.body;
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
@@ -26,7 +27,7 @@ export const register = async (req, res) => {
       picturePath,
       friends,
       location,
-      occopation,
+      occupation,
       viewedProfile: Math.floor(Math.random() * 10000),
       impressions: Math.floor(Math.random() * 10000),
     });
