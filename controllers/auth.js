@@ -6,7 +6,6 @@ import User from "../models/User.js";
 
 export const register = async (req, res) => {
   try {
-    console.log(req.body);
     const {
       firstName,
       lastName,
@@ -34,7 +33,7 @@ export const register = async (req, res) => {
     const saveduser = await newUser.save();
     res.status(201).json(saveduser);
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     res.status(500).json({ error: error.message });
   }
 };
@@ -57,7 +56,7 @@ export const login = async (req, res) => {
     delete user.password;
     res.status(200).json({ token, user });
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     res.status(500).json({ message: error.message });
   }
 };
